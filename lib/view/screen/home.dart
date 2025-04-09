@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
-import 'package:invoice_generator/controllers/guest_log%20in.dart';
 import 'package:invoice_generator/controllers/logout_controller.dart';
 
 import '../../controllers/log in.dart';
@@ -24,7 +21,6 @@ class HomeScreen extends StatelessWidget {
         title: Row(
           children: [
             CircleAvatar(radius: 15, backgroundColor: Color(0xFF00BFA6)),
-
             SizedBox(width: 10),
             Text(
               loginController.getCurrentUserName(),
@@ -68,7 +64,6 @@ class HomeScreen extends StatelessWidget {
                     );
                   }).toList(),
             ),
-
             SizedBox(height: 20),
             Container(
               padding: EdgeInsets.all(18),
@@ -152,7 +147,7 @@ class HomeScreen extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: Color(0xFFB0BEC5), // Light Grey for subtle contrast
+            color: Color(0xFFB0BEC5),
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),

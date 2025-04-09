@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:invoice_generator/routes/routes.dart';
-import '../../../controllers/auth.dart';
+
 import '../../../controllers/guest_log in.dart';
 import '../../../controllers/log in.dart';
 
@@ -178,7 +178,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed:
-                              () => Navigator.pushNamed(context, Routes.home),
+                              () => Navigator.pushNamed(context, Routes.register),
                           child: Text(
                             "Don't have an account? Sign up",
                             style: TextStyle(color: Colors.blueAccent),

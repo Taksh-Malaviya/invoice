@@ -178,7 +178,8 @@ class LoginScreen extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed:
-                              () => Navigator.pushNamed(context, Routes.home),
+                              () =>
+                                  Navigator.pushNamed(context, Routes.register),
                           child: Text(
                             "Don't have an account? Sign up",
                             style: TextStyle(color: Colors.blueAccent),

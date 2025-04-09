@@ -6,14 +6,14 @@ import 'package:pdf/pdf.dart' as pw;
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 
-class CreditMemoPage extends StatefulWidget {
-  const CreditMemoPage({super.key});
+class CreditMnemoPage extends StatefulWidget {
+  const CreditMnemoPage({super.key});
 
   @override
-  _CreditMemoPageState createState() => _CreditMemoPageState();
+  _CreditMnemoPageState createState() => _CreditMnemoPageState();
 }
 
-class _CreditMemoPageState extends State<CreditMemoPage> {
+class _CreditMnemoPageState extends State<CreditMnemoPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
