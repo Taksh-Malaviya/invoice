@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
+import 'package:invoice_generator/controllers/guest_log%20in.dart';
 import 'package:invoice_generator/controllers/logout_controller.dart';
 
+import '../../controllers/log in.dart';
 import '../../routes/routes.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,23 +15,23 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LogoutController logoutController = Get.put(LogoutController());
+    LoginController loginController = Get.put(LoginController());
+
     return Scaffold(
       backgroundColor: Color(0xFF1E1E2C),
       appBar: AppBar(
         backgroundColor: Color(0xFF292A3A),
         title: Row(
           children: [
-            CircleAvatar(
-              radius: 15,
-              backgroundColor: Color(0xFF00BFA6),
-              child: Text("JD", style: TextStyle(color: Colors.white)),
-            ),
+            CircleAvatar(radius: 15, backgroundColor: Color(0xFF00BFA6)),
+
             SizedBox(width: 10),
             Text(
-              "John Doe",
+              loginController.getCurrentUserName(),
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
+                overflow: TextOverflow.ellipsis,
                 fontWeight: FontWeight.bold,
               ),
             ),

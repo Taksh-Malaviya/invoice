@@ -25,10 +25,12 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<void> googleSignIn() async {
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  Future<void> googleSignInUser() async {
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
       if (googleUser == null) {
         _showErrorSnackbar("Google Sign-In was cancelled.");
         return;
@@ -43,10 +45,27 @@ class LoginController extends GetxController {
       );
 
       await FirebaseAuth.instance.signInWithCredential(credential);
+
       Get.offNamed('/home');
     } catch (e) {
       _showErrorSnackbar("Failed to sign in with Google. Please try again.");
     }
+  }
+
+  String getCurrentUserName() {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      for (var provider in user.providerData) {
+        if (provider.providerId == "password") {
+          return user.email?.split("@").first ?? "User";
+        } else if (provider.providerId == "google.com") {
+          return user.email ?? "User";
+        }
+      }
+    }
+
+    return "Guest";
   }
 
   Future<void> forgotPassword() async {
