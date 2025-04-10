@@ -2,12 +2,14 @@ import 'package:get/get.dart';
 import 'package:invoice_generator/view/auth/register/register.dart';
 import 'package:invoice_generator/view/screen/credit.dart';
 import 'package:invoice_generator/view/screen/home.dart';
+import 'package:invoice_generator/view/screen/intro.dart';
 import '../view/auth/login/login.dart';
 import '../view/screen/invoice.dart';
 import '../view/screen/slplash.dart';
 
 class Routes {
   static const String splashScreen = "/";
+  static const String intro = "/intro";
   static const String register = "/register";
   static const String login = "/login";
   static const String home = "/home";
@@ -20,6 +22,7 @@ class Routes {
       page: () => SplashScreen(),
       transition: Transition.fadeIn,
     ),
+    GetPage(name: intro, page: () => Intro(), transition: Transition.fadeIn),
     GetPage(
       name: register,
       page: () => RegisterScreen(),
@@ -35,11 +38,11 @@ class Routes {
       page: () => HomeScreen(),
       transition: Transition.fadeIn,
     ),
-    GetPage(
-      name: invoice,
-      page: () => InvoiceHomePage(),
-      transition: Transition.fadeIn,
-    ),
+    // GetPage(
+    //   name: invoice,
+    //   page: () => InvoiceHomePage(),
+    //   transition: Transition.fadeIn,
+    // ),
     GetPage(
       name: credit,
       page: () => CreditMemoPage(),

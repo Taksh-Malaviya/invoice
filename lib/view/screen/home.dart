@@ -1,158 +1,438 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:get/get.dart';
-import 'package:invoice_generator/controllers/logout_controller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-import '../../controllers/log in.dart';
-import '../../routes/routes.dart';
+import '../../colors/colours.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
-    LogoutController logoutController = Get.put(LogoutController());
-    LoginController loginController = Get.put(LoginController());
-
     return Scaffold(
       backgroundColor: Color(0xFF1E1E2C),
       appBar: AppBar(
         backgroundColor: Color(0xFF292A3A),
         title: Row(
           children: [
-            CircleAvatar(radius: 15, backgroundColor: Color(0xFF00BFA6)),
-            SizedBox(width: 10),
+            CircleAvatar(radius: 15.w, backgroundColor: Color(0xFF00BFA6)),
+            SizedBox(width: 10.w),
             Text(
-              loginController.getCurrentUserName(),
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                overflow: TextOverflow.ellipsis,
+              "Your Business",
+              style: lato(
+                color: white,
+                fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Spacer(),
-            IconButton(
-              onPressed: () {
-                logoutController.logout();
-              },
-              icon: Icon(Icons.logout_outlined, color: Colors.redAccent),
-            ),
+            Icon(Icons.notifications, color: white),
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CarouselSlider(
-              options: CarouselOptions(
-                height: 130.0,
-                autoPlay: true,
-                enlargeCenterPage: true,
-              ),
-              items:
-                  [
-                    'https://www.wpfinal.com/wp-content/uploads/2024/02/Advanced-Ads-Ad-Slider.jpg',
-                    'https://www.wpfinal.com/wp-content/uploads/2024/02/Advanced-Ads-Ad-Slider.jpg',
-                    'https://www.wpfinal.com/wp-content/uploads/2024/02/Advanced-Ads-Ad-Slider.jpg',
-                  ].map((imageUrl) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(14),
-                      child: Image.network(imageUrl, fit: BoxFit.cover),
-                    );
-                  }).toList(),
+              options: CarouselOptions(height: 130.0.h, autoPlay: true),
+              items: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Slide 1",
+                      style: lato(
+                        color: white,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                  decoration: BoxDecoration(
+                    color: green,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Slide 2",
+                      style: lato(
+                        color: white,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
+            _buildSalesCard(),
+            SizedBox(height: 15.h),
+            Row(
+              children: [
+                Text(
+                  "   Create",
+                  style: lato(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.sp,
+                    color: white,
+                  ),
+                ),
+                Icon(Icons.play_arrow_sharp, color: white),
+              ],
+            ),
+            SizedBox(height: 15.h),
             Container(
+              height: 200.h,
+              width: double.infinity,
               padding: EdgeInsets.all(18),
               decoration: BoxDecoration(
                 color: Color(0xFF292A3A),
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
                       Text(
-                        "This Month",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
+                      SizedBox(height: 15.h),
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
                       Text(
-                        "View Reports",
-                        style: TextStyle(color: Color(0xFF00BFA6)),
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildFinancialCard("Revenue", "₹50,000"),
-                      _buildFinancialCard("Expenses", "₹10,000"),
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      SizedBox(height: 15.sp),
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      SizedBox(height: 15.sp),
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                      SizedBox(height: 15.h),
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                     ],
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            Text(
-              "Quick Actions",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
-            GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 3,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
+            SizedBox(height: 15.h),
+            Row(
               children: [
-                GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, Routes.invoice),
-                  child: _buildFeatureIcon(Icons.receipt, "Invoice"),
+                Text(
+                  "   Quick Access",
+                  style: lato(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.sp,
+                    color: white,
+                  ),
                 ),
-                GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, Routes.credit),
-                  child: _buildFeatureIcon(Icons.credit_card, "Credit Note"),
-                ),
-                _buildFeatureIcon(Icons.account_balance, "Debit Note"),
-                _buildFeatureIcon(Icons.list, "Orders"),
-                _buildFeatureIcon(Icons.payment, "Payments"),
-                _buildFeatureIcon(Icons.local_shipping, "Shipping"),
               ],
+            ),
+            SizedBox(height: 15.h),
+            Container(
+              height: 300.h,
+              width: double.infinity,
+              padding: EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: Color(0xFF292A3A),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                      SizedBox(height: 15.h),
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                      SizedBox(height: 15.h),
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                      SizedBox(height: 15.h),
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                      SizedBox(height: 15.h),
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                      SizedBox(height: 15.h),
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                      SizedBox(height: 15.h),
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                      SizedBox(height: 15.h),
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                      SizedBox(height: 15.h),
+                      CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xFF292A3A),
+        selectedItemColor: Colors.greenAccent,
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.receipt), label: "Bills"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: "Products",
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.people), label: "Parties"),
+          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: "More"),
+        ],
+      ),
     );
   }
 
-  Widget _buildFeatureIcon(IconData icon, String label) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: Color(0xFF00BFA6).withOpacity(0.15),
-          child: Icon(icon, size: 30, color: Color(0xFF00BFA6)),
-        ),
-        SizedBox(height: 5),
-        Text(
-          label,
-          style: TextStyle(
-            color: Color(0xFFB0BEC5),
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
+  Widget _buildSalesCard() {
+    return Container(
+      padding: EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Color(0xFF292A3A),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "This Year",
+                style: lato(
+                  color: white,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              Text(
+                "View Bills",
+                style: lato(
+                  color: Colors.blueAccent,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 12.sp,
+                ),
+              ),
+            ],
           ),
-        ),
-      ],
+          SizedBox(height: 10.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildFinancialCard("Sales", "₹0.00"),
+              _buildFinancialCard("Purchases", "₹0.00"),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -160,14 +440,17 @@ class HomeScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: TextStyle(color: Color(0xFFB0BEC5), fontSize: 14)),
+        Text(
+          title,
+          style: lato(
+            color: Colors.grey,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
         Text(
           amount,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+          style: lato(color: white, fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ],
     );

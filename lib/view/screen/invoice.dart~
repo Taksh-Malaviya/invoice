@@ -1,11 +1,26 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart' as pw;
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 
-import '../../controllers/all_controllers.dart';
+final TextEditingController invoiceNumberController = TextEditingController();
+final TextEditingController invoiceDocumentNumberController =
+    TextEditingController();
+final TextEditingController invoiceDateController = TextEditingController();
+final TextEditingController dueDateController = TextEditingController();
+final TextEditingController paymentTypeController = TextEditingController();
+final TextEditingController accountDetailsController = TextEditingController();
+
+final TextEditingController sellerNameController = TextEditingController();
+final TextEditingController sellerAddressController = TextEditingController();
+final TextEditingController sellerContactController = TextEditingController();
+final TextEditingController sellerTaxNumberController = TextEditingController();
+
+final TextEditingController buyerNameController = TextEditingController();
+final TextEditingController buyerAddressController = TextEditingController();
+final TextEditingController buyerContactController = TextEditingController();
+
+List<Map<String, String>> items = [];
+final TextEditingController itemNameController = TextEditingController();
+final TextEditingController itemQuantityController = TextEditingController();
+final TextEditingController itemPriceController = TextEditingController();
 
 class InvoiceHomePage extends StatefulWidget {
   const InvoiceHomePage({super.key});
@@ -22,29 +37,10 @@ class _InvoiceHomePageState extends State<InvoiceHomePage> {
     invoiceNumberController.text = _generateInvoiceNumber();
   }
 
-
-
   String _generateInvoiceNumber() {
     final now = DateTime.now();
-    final random = (1000 + now.millisecond).toString(); // Ensures randomness
+    final random = (1000 + now.millisecond).toString();
     return "INV${now.year}${now.month}${now.day}$random";
-  }
-
-  void _addItem() {
-    if (itemNameController.text.isNotEmpty &&
-        itemQuantityController.text.isNotEmpty &&
-        itemPriceController.text.isNotEmpty) {
-      setState(() {
-        items.add({
-          "name": itemNameController.text,
-          "quantity": itemQuantityController.text,
-          "price": itemPriceController.text,
-        });
-        itemNameController.clear();
-        itemQuantityController.clear();
-        itemPriceController.clear();
-      });
-    }
   }
 
   @override
@@ -75,6 +71,11 @@ class _InvoiceHomePageState extends State<InvoiceHomePage> {
                 filled: true,
                 fillColor: Colors.white,
               ),
+            ),
+            _buildTextField(
+              controller: invoiceDocumentNumberController,
+              label: "Enter Invoice Document Number",
+              icon: Icons.confirmation_number,
             ),
             _buildTextField(
               controller: invoiceDateController,
@@ -120,7 +121,7 @@ class _InvoiceHomePageState extends State<InvoiceHomePage> {
                 icon: Icons.home,
               ),
               _buildTextField(
-                controller:buyerContactController,
+                controller: buyerContactController,
                 label: "Buyer Contact",
                 icon: Icons.phone,
               ),
@@ -153,10 +154,7 @@ class _InvoiceHomePageState extends State<InvoiceHomePage> {
                 label: "Price",
                 icon: Icons.attach_money,
               ),
-              ElevatedButton(
-                onPressed: _addItem,
-                child: const Text("Add Item"),
-              ),
+              ElevatedButton(onPressed: () {}, child: const Text("Add Item")),
               ...items.map(
                 (item) => ListTile(
                   title: Text("${item["name"]} - \$${item["price"]}"),
@@ -166,7 +164,7 @@ class _InvoiceHomePageState extends State<InvoiceHomePage> {
             ]),
             const SizedBox(height: 20),
             ElevatedButton.icon(
-              onPressed: () => _generateInvoice(),
+              onPressed: () {},
               icon: const Icon(Icons.picture_as_pdf),
               label: const Text("Generate Invoice"),
               style: ElevatedButton.styleFrom(
@@ -228,105 +226,6 @@ class _InvoiceHomePageState extends State<InvoiceHomePage> {
         ),
       ),
     );
-  }
-
-  Future<void> _generateInvoice() async {
-    var pdf = pw.Document();
-
-    // Get the current Firebase user
-    User? user = FirebaseAuth.instance.currentUser;
-    String userEmail = user?.email ?? "Guest";
-
-    // Store invoice in Firestore
-    CollectionReference invoices = FirebaseFirestore.instance.collection(
-      userEmail,
-    );
-
-    Map<String, dynamic> invoiceData = {
-      "user": userEmail,
-      "invoiceNumber": invoiceNumberController.text,
-      "invoiceDate": invoiceDateController.text,
-      "dueDate":dueDateController.text,
-      "seller": {
-        "name": sellerNameController.text,
-        "address": sellerAddressController.text,
-        "contact": sellerContactController.text,
-        "taxNumber": sellerTaxNumberController.text,
-      },
-      "buyer": {
-        "name": buyerNameController.text,
-        "address": buyerAddressController.text,
-        "contact": buyerContactController.text,
-      },
-      "payment": {
-        "type": paymentTypeController.text,
-        "accountDetails": accountDetailsController.text,
-      },
-      "items": items,
-      "total": _calculateTotal(),
-      "timestamp": FieldValue.serverTimestamp(),
-    };
-
-    await invoices.add(invoiceData);
-
-    // Generate PDF
-    pdf.addPage(
-      pw.Page(
-        pageFormat: pw.PdfPageFormat.a4,
-        build: (pw.Context context) {
-          return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Text(
-                "Invoice",
-                style: pw.TextStyle(
-                  fontSize: 24,
-                  fontWeight: pw.FontWeight.bold,
-                ),
-              ),
-              pw.SizedBox(height: 10),
-              pw.Text("Invoice Number: ${invoiceNumberController.text}"),
-              pw.Text("Invoice Date: ${invoiceDateController.text}"),
-              pw.Text("Due Date: ${dueDateController.text}"),
-              pw.SizedBox(height: 10),
-              pw.Text("Seller: ${sellerNameController.text}"),
-              pw.Text("Buyer: ${buyerNameController.text}"),
-              pw.SizedBox(height: 10),
-              pw.Table.fromTextArray(
-                headers: ["Item", "Quantity", "Price"],
-                data:
-                    items
-                        .map(
-                          (item) => [
-                            item["name"],
-                            item["quantity"],
-                            "\$${item["price"]}",
-                          ],
-                        )
-                        .toList(),
-              ),
-              pw.SizedBox(height: 20),
-              pw.Text(
-                "Total: \$${_calculateTotal()}",
-                style: pw.TextStyle(
-                  fontSize: 18,
-                  fontWeight: pw.FontWeight.bold,
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-
-    // Print PDF
-    await Printing.layoutPdf(
-      onLayout: (pw.PdfPageFormat format) async => pdf.save(),
-    );
-
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Invoice saved successfully!")));
   }
 
   double _calculateTotal() {

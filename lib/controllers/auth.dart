@@ -26,19 +26,31 @@ class AuthController extends GetxController {
   }
 
   Future<void> register() async {
+    if (!_validateFields()) return;
+
     isLoading.value = true;
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-      Get.snackbar(
-        "Success",
-        "Account created successfully! Please log in.",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
+
+      User? user = userCredential.user;
+
+      if (user != null && !user.emailVerified) {
+        await user.sendEmailVerification();
+        Get.snackbar(
+          "Verify Your Email",
+          "A verification email has been sent to ${user.email}. Please verify your email before logging in.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.orange,
+          colorText: Colors.white,
+        );
+
+        await FirebaseAuth.instance.signOut();
+      }
+
       Get.offNamed(Routes.login);
     } on FirebaseAuthException catch (e) {
       _showErrorSnackbar(_getErrorMessage(e.code));
@@ -47,6 +59,20 @@ class AuthController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  // Field Validation
+  bool _validateFields() {
+    if (emailController.text.trim().isEmpty ||
+        passwordController.text.trim().isEmpty) {
+      _showErrorSnackbar("Please enter both email and password.");
+      return false;
+    }
+    if (passwordController.text.trim().length < 6) {
+      _showErrorSnackbar("Password must be at least 6 characters long.");
+      return false;
+    }
+    return true;
   }
 
   void _showErrorSnackbar(String message) {

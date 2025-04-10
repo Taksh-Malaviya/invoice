@@ -1,337 +1,238 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart' as pw;
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
-
-import '../../controllers/all_controllers.dart';
-
-class InvoiceHomePage extends StatefulWidget {
-  const InvoiceHomePage({super.key});
-
-  @override
-  State<InvoiceHomePage> createState() => _InvoiceHomePageState();
-}
-
-class _InvoiceHomePageState extends State<InvoiceHomePage> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    invoiceNumberController.text = _generateInvoiceNumber();
-  }
-
-  String _generateInvoiceNumber() {
-    final now = DateTime.now();
-    final random = (1000 + now.millisecond).toString(); // Ensures randomness
-    return "INV${now.year}${now.month}${now.day}$random";
-  }
-
-  void _addItem() {
-    if (itemNameController.text.isNotEmpty &&
-        itemQuantityController.text.isNotEmpty &&
-        itemPriceController.text.isNotEmpty) {
-      setState(() {
-        items.add({
-          "name": itemNameController.text,
-          "quantity": itemQuantityController.text,
-          "price": itemPriceController.text,
-        });
-        itemNameController.clear();
-        itemQuantityController.clear();
-        itemPriceController.clear();
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        title: const Text("Invoice Generator"),
-        backgroundColor: Colors.blueAccent,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              readOnly: true,
-              controller: invoiceNumberController,
-              decoration: InputDecoration(
-                labelText: "Invoice Number",
-                prefixIcon: Icon(
-                  Icons.confirmation_number,
-                  color: Colors.blueAccent,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                filled: true,
-                fillColor: Colors.white,
-              ),
-            ),
-            _buildTextField(
-              controller: invoiceDateController,
-              label: "Invoice Date",
-              icon: Icons.date_range,
-            ),
-            _buildTextField(
-              controller: dueDateController,
-              label: "Due Date",
-              icon: Icons.event,
-            ),
-            _buildSection("Seller Details", [
-              _buildTextField(
-                controller: sellerNameController,
-                label: "Seller Name",
-                icon: Icons.store,
-              ),
-              _buildTextField(
-                controller: sellerAddressController,
-                label: "Seller Address",
-                icon: Icons.location_on,
-              ),
-              _buildTextField(
-                controller: sellerContactController,
-                label: "Seller Contact",
-                icon: Icons.phone,
-              ),
-              _buildTextField(
-                controller: sellerTaxNumberController,
-                label: "Seller Tax Number",
-                icon: Icons.confirmation_number,
-              ),
-            ]),
-            _buildSection("Buyer Details", [
-              _buildTextField(
-                controller: buyerNameController,
-                label: "Buyer Name",
-                icon: Icons.person,
-              ),
-              _buildTextField(
-                controller: buyerAddressController,
-                label: "Buyer Address",
-                icon: Icons.home,
-              ),
-              _buildTextField(
-                controller: buyerContactController,
-                label: "Buyer Contact",
-                icon: Icons.phone,
-              ),
-            ]),
-            _buildSection("Payment Details", [
-              _buildTextField(
-                controller: paymentTypeController,
-                label: "Payment Type",
-                icon: Icons.payment,
-              ),
-              _buildTextField(
-                controller: accountDetailsController,
-                label: "Account Details",
-                icon: Icons.account_balance,
-              ),
-            ]),
-            _buildSection("Invoice Items", [
-              _buildTextField(
-                controller: itemNameController,
-                label: "Item Name",
-                icon: Icons.shopping_bag,
-              ),
-              _buildTextField(
-                controller: itemQuantityController,
-                label: "Quantity",
-                icon: Icons.format_list_numbered,
-              ),
-              _buildTextField(
-                controller: itemPriceController,
-                label: "Price",
-                icon: Icons.attach_money,
-              ),
-              ElevatedButton(
-                onPressed: _addItem,
-                child: const Text("Add Item"),
-              ),
-              ...items.map(
-                (item) => ListTile(
-                  title: Text("${item["name"]} - \$${item["price"]}"),
-                  subtitle: Text("Quantity: ${item["quantity"]}"),
-                ),
-              ),
-            ]),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: () => _generateInvoice(),
-              icon: const Icon(Icons.picture_as_pdf),
-              label: const Text("Generate Invoice"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
-                ),
-                textStyle: const TextStyle(fontSize: 16),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSection(String title, List<Widget> children) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      elevation: 5,
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.blueAccent,
-              ),
-            ),
-            const SizedBox(height: 10),
-            ...children,
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: Icon(icon, color: Colors.blueAccent),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-          filled: true,
-          fillColor: Colors.white,
-        ),
-      ),
-    );
-  }
-
-  Future<void> _generateInvoice() async {
-    var pdf = pw.Document();
-
-    // Get the current Firebase user
-    User? user = FirebaseAuth.instance.currentUser;
-    String userEmail = user?.email ?? "Guest";
-
-    // Store invoice in Firestore
-    CollectionReference invoices = FirebaseFirestore.instance.collection(
-      userEmail,
-    );
-
-    Map<String, dynamic> invoiceData = {
-      "user": userEmail,
-      "invoiceNumber": invoiceNumberController.text,
-      "invoiceDate": invoiceDateController.text,
-      "dueDate": dueDateController.text,
-      "seller": {
-        "name": sellerNameController.text,
-        "address": sellerAddressController.text,
-        "contact": sellerContactController.text,
-        "taxNumber": sellerTaxNumberController.text,
-      },
-      "buyer": {
-        "name": buyerNameController.text,
-        "address": buyerAddressController.text,
-        "contact": buyerContactController.text,
-      },
-      "payment": {
-        "type": paymentTypeController.text,
-        "accountDetails": accountDetailsController.text,
-      },
-      "items": items,
-      "total": _calculateTotal(),
-      "timestamp": FieldValue.serverTimestamp(),
-    };
-
-    await invoices.add(invoiceData);
-
-    // Generate PDF
-    pdf.addPage(
-      pw.Page(
-        pageFormat: pw.PdfPageFormat.a4,
-        build: (pw.Context context) {
-          return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Text(
-                "Invoice",
-                style: pw.TextStyle(
-                  fontSize: 24,
-                  fontWeight: pw.FontWeight.bold,
-                ),
-              ),
-              pw.SizedBox(height: 10),
-              pw.Text("Invoice Number: ${invoiceNumberController.text}"),
-              pw.Text("Invoice Date: ${invoiceDateController.text}"),
-              pw.Text("Due Date: ${dueDateController.text}"),
-              pw.SizedBox(height: 10),
-              pw.Text("Seller: ${sellerNameController.text}"),
-              pw.Text("Buyer: ${buyerNameController.text}"),
-              pw.SizedBox(height: 10),
-              pw.Table.fromTextArray(
-                headers: ["Item", "Quantity", "Price"],
-                data:
-                    items
-                        .map(
-                          (item) => [
-                            item["name"],
-                            item["quantity"],
-                            "\$${item["price"]}",
-                          ],
-                        )
-                        .toList(),
-              ),
-              pw.SizedBox(height: 20),
-              pw.Text(
-                "Total: \$${_calculateTotal()}",
-                style: pw.TextStyle(
-                  fontSize: 18,
-                  fontWeight: pw.FontWeight.bold,
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-
-    // Print PDF
-    await Printing.layoutPdf(
-      onLayout: (pw.PdfPageFormat format) async => pdf.save(),
-    );
-
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Invoice saved successfully!")));
-  }
-
-  double _calculateTotal() {
-    return items.fold(0, (sum, item) {
-      double price = double.tryParse(item["price"] ?? "0") ?? 0;
-      int quantity = int.tryParse(item["quantity"] ?? "0") ?? 0;
-      return sum + (price * quantity);
-    });
-  }
-}
+// import 'package:flutter/material.dart';
+//
+// final TextEditingController invoiceNumberController = TextEditingController();
+// final TextEditingController invoiceDocumentNumberController =
+//     TextEditingController();
+// final TextEditingController invoiceDateController = TextEditingController();
+// final TextEditingController dueDateController = TextEditingController();
+// final TextEditingController paymentTypeController = TextEditingController();
+// final TextEditingController accountDetailsController = TextEditingController();
+//
+// final TextEditingController sellerNameController = TextEditingController();
+// final TextEditingController sellerAddressController = TextEditingController();
+// final TextEditingController sellerContactController = TextEditingController();
+// final TextEditingController sellerTaxNumberController = TextEditingController();
+//
+// final TextEditingController buyerNameController = TextEditingController();
+// final TextEditingController buyerAddressController = TextEditingController();
+// final TextEditingController buyerContactController = TextEditingController();
+//
+// List<Map<String, String>> items = [];
+// final TextEditingController itemNameController = TextEditingController();
+// final TextEditingController itemQuantityController = TextEditingController();
+// final TextEditingController itemPriceController = TextEditingController();
+//
+// class InvoiceHomePage extends StatefulWidget {
+//   const InvoiceHomePage({super.key});
+//
+//   @override
+//   State<InvoiceHomePage> createState() => _InvoiceHomePageState();
+// }
+//
+// class _InvoiceHomePageState extends State<InvoiceHomePage> {
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+//     super.initState();
+//     invoiceNumberController.text = _generateInvoiceNumber();
+//   }
+//
+//   String _generateInvoiceNumber() {
+//     final now = DateTime.now();
+//     final random = (1000 + now.millisecond).toString();
+//     return "INV${now.year}${now.month}${now.day}$random";
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.grey[200],
+//       appBar: AppBar(
+//         title: const Text("Invoice Generator"),
+//         backgroundColor: Colors.blueAccent,
+//         elevation: 0,
+//       ),
+//       body: SingleChildScrollView(
+//         padding: const EdgeInsets.all(16),
+//         child: Column(
+//           children: [
+//             TextField(
+//               readOnly: true,
+//               controller: invoiceNumberController,
+//               decoration: InputDecoration(
+//                 labelText: "Invoice Number",
+//                 prefixIcon: Icon(
+//                   Icons.confirmation_number,
+//                   color: Colors.blueAccent,
+//                 ),
+//                 border: OutlineInputBorder(
+//                   borderRadius: BorderRadius.circular(8),
+//                 ),
+//                 filled: true,
+//                 fillColor: Colors.white,
+//               ),
+//             ),
+//             _buildTextField(
+//               controller: invoiceDocumentNumberController,
+//               label: "Enter Invoice Document Number",
+//               icon: Icons.confirmation_number,
+//             ),
+//             _buildTextField(
+//               controller: invoiceDateController,
+//               label: "Invoice Date",
+//               icon: Icons.date_range,
+//             ),
+//             _buildTextField(
+//               controller: dueDateController,
+//               label: "Due Date",
+//               icon: Icons.event,
+//             ),
+//             _buildSection("Seller Details", [
+//               _buildTextField(
+//                 controller: sellerNameController,
+//                 label: "Seller Name",
+//                 icon: Icons.store,
+//               ),
+//               _buildTextField(
+//                 controller: sellerAddressController,
+//                 label: "Seller Address",
+//                 icon: Icons.location_on,
+//               ),
+//               _buildTextField(
+//                 controller: sellerContactController,
+//                 label: "Seller Contact",
+//                 icon: Icons.phone,
+//               ),
+//               _buildTextField(
+//                 controller: sellerTaxNumberController,
+//                 label: "Seller Tax Number",
+//                 icon: Icons.confirmation_number,
+//               ),
+//             ]),
+//             _buildSection("Buyer Details", [
+//               _buildTextField(
+//                 controller: buyerNameController,
+//                 label: "Buyer Name",
+//                 icon: Icons.person,
+//               ),
+//               _buildTextField(
+//                 controller: buyerAddressController,
+//                 label: "Buyer Address",
+//                 icon: Icons.home,
+//               ),
+//               _buildTextField(
+//                 controller: buyerContactController,
+//                 label: "Buyer Contact",
+//                 icon: Icons.phone,
+//               ),
+//             ]),
+//             _buildSection("Payment Details", [
+//               _buildTextField(
+//                 controller: paymentTypeController,
+//                 label: "Payment Type",
+//                 icon: Icons.payment,
+//               ),
+//               _buildTextField(
+//                 controller: accountDetailsController,
+//                 label: "Account Details",
+//                 icon: Icons.account_balance,
+//               ),
+//             ]),
+//             _buildSection("Invoice Items", [
+//               _buildTextField(
+//                 controller: itemNameController,
+//                 label: "Item Name",
+//                 icon: Icons.shopping_bag,
+//               ),
+//               _buildTextField(
+//                 controller: itemQuantityController,
+//                 label: "Quantity",
+//                 icon: Icons.format_list_numbered,
+//               ),
+//               _buildTextField(
+//                 controller: itemPriceController,
+//                 label: "Price",
+//                 icon: Icons.attach_money,
+//               ),
+//               ElevatedButton(onPressed: () {}, child: const Text("Add Item")),
+//               ...items.map(
+//                 (item) => ListTile(
+//                   title: Text("${item["name"]} - \$${item["price"]}"),
+//                   subtitle: Text("Quantity: ${item["quantity"]}"),
+//                 ),
+//               ),
+//             ]),
+//             const SizedBox(height: 20),
+//             ElevatedButton.icon(
+//               onPressed: () {},
+//               icon: const Icon(Icons.picture_as_pdf),
+//               label: const Text("Generate Invoice"),
+//               style: ElevatedButton.styleFrom(
+//                 backgroundColor: Colors.green,
+//                 padding: const EdgeInsets.symmetric(
+//                   horizontal: 20,
+//                   vertical: 12,
+//                 ),
+//                 textStyle: const TextStyle(fontSize: 16),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+//
+//   Widget _buildSection(String title, List<Widget> children) {
+//     return Card(
+//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+//       elevation: 5,
+//       margin: const EdgeInsets.symmetric(vertical: 10),
+//       child: Padding(
+//         padding: const EdgeInsets.all(16),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Text(
+//               title,
+//               style: const TextStyle(
+//                 fontSize: 18,
+//                 fontWeight: FontWeight.bold,
+//                 color: Colors.blueAccent,
+//               ),
+//             ),
+//             const SizedBox(height: 10),
+//             ...children,
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+//
+//   Widget _buildTextField({
+//     required TextEditingController controller,
+//     required String label,
+//     required IconData icon,
+//   }) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(vertical: 8),
+//       child: TextField(
+//         controller: controller,
+//         decoration: InputDecoration(
+//           labelText: label,
+//           prefixIcon: Icon(icon, color: Colors.blueAccent),
+//           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+//           filled: true,
+//           fillColor: Colors.white,
+//         ),
+//       ),
+//     );
+//   }
+//
+//   double _calculateTotal() {
+//     return items.fold(0, (sum, item) {
+//       double price = double.tryParse(item["price"] ?? "0") ?? 0;
+//       int quantity = int.tryParse(item["quantity"] ?? "0") ?? 0;
+//       return sum + (price * quantity);
+//     });
+//   }
+// }

@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:invoice_generator/routes/routes.dart';
-
+import '../../../colors/colours.dart';
 import '../../../controllers/guest_log in.dart';
 import '../../../controllers/log in.dart';
 
@@ -14,8 +12,53 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              SizedBox(height: 23.h),
+              Center(
+                child: Text(
+                  "Welcome To Invoice ",
+                  style: lato(
+                    color: white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 26.sp,
+                  ),
+                ),
+              ),
+              Center(
+                child: Text(
+                  "Login or Sign up to your  ",
+                  style: lato(
+                    color: white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.sp,
+                  ),
+                ),
+              ),
+              Center(
+                child: Text(
+                  "account",
+                  style: lato(
+                    color: white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/*Container(
         width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -42,10 +85,10 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         Text(
                           "Invoice Generator",
-                          style: TextStyle(
+                          style: lato(
                             fontSize: 26,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blueAccent,
+                            color: blue,
                           ),
                         ),
                         SizedBox(height: 20),
@@ -53,10 +96,7 @@ class LoginScreen extends StatelessWidget {
                           controller: controller.emailController,
                           decoration: InputDecoration(
                             labelText: "Email",
-                            prefixIcon: Icon(
-                              Icons.email,
-                              color: Colors.blueAccent,
-                            ),
+                            prefixIcon: Icon(Icons.email, color: blue),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -67,10 +107,7 @@ class LoginScreen extends StatelessWidget {
                           controller: controller.passwordController,
                           decoration: InputDecoration(
                             labelText: "Password",
-                            prefixIcon: Icon(
-                              Icons.lock,
-                              color: Colors.blueAccent,
-                            ),
+                            prefixIcon: Icon(Icons.lock, color: blue),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -84,7 +121,11 @@ class LoginScreen extends StatelessWidget {
                             onPressed: controller.forgotPassword,
                             child: Text(
                               "Forgot Password?",
-                              style: TextStyle(color: Colors.blueAccent),
+                              style: lato(
+                                color: blue,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                         ),
@@ -106,21 +147,22 @@ class LoginScreen extends StatelessWidget {
                                             12,
                                           ),
                                         ),
-                                        backgroundColor: Colors.blueAccent,
+                                        backgroundColor: blue,
                                       ),
                                       child: Text(
                                         "Login",
-                                        style: TextStyle(
+                                        style: lato(
+                                          fontWeight: FontWeight.normal,
                                           fontSize: 18,
-                                          color: Colors.white,
+                                          color: white,
                                         ),
                                       ),
                                     ),
                                   ),
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         Divider(thickness: 1),
-                        SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton.icon(
@@ -131,14 +173,15 @@ class LoginScreen extends StatelessWidget {
                             ),
                             label: Text(
                               "Sign in with Google",
-                              style: TextStyle(
+                              style: lato(
                                 fontSize: 16,
-                                color: Colors.black,
+                                fontWeight: FontWeight.normal,
+                                color: black,
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(vertical: 14),
-                              backgroundColor: Colors.white,
+                              backgroundColor: white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -161,14 +204,15 @@ class LoginScreen extends StatelessWidget {
                             ),
                             label: Text(
                               "Log in as Guest",
-                              style: TextStyle(
+                              style: lato(
+                                fontWeight: FontWeight.normal,
                                 fontSize: 16,
-                                color: Colors.black,
+                                color: black,
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(vertical: 14),
-                              backgroundColor: Colors.white,
+                              backgroundColor: white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -182,7 +226,11 @@ class LoginScreen extends StatelessWidget {
                                   Navigator.pushNamed(context, Routes.register),
                           child: Text(
                             "Don't have an account? Sign up",
-                            style: TextStyle(color: Colors.blueAccent),
+                            style: lato(
+                              color: blue,
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                         ),
                       ],
@@ -193,7 +241,4 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
+      ),*/
