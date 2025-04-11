@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
+import 'package:invoice_generator/controllers/log%20in.dart';
 
 import '../../colors/colours.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var login = Get.put(LoginController());
     return Scaffold(
       backgroundColor: Color(0xFF1E1E2C),
       appBar: AppBar(
@@ -25,7 +27,13 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Spacer(),
-            Icon(Icons.notifications, color: white),
+            IconButton(
+              onPressed: () {
+                login.logoutUser();
+              },
+              icon: Icon(Icons.logout),
+              color: white,
+            ), 
           ],
         ),
       ),
@@ -47,7 +55,11 @@ class HomeScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       "Slide 1",
-                      style: lato(color: white, fontSize: 18.sp, fontWeight: FontWeight.normal),
+                      style: lato(
+                        color: white,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
                   ),
                 ),
@@ -61,7 +73,11 @@ class HomeScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       "Slide 2",
-                      style: lato(color: white, fontSize: 18.sp, fontWeight: FontWeight.normal),
+                      style: lato(
+                        color: white,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
                   ),
                 ),
@@ -98,10 +114,24 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white, fontSize: 12.sp, fontWeight: FontWeight.normal)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                       SizedBox(height: 15.h),
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white, fontSize: 12.sp, fontWeight: FontWeight.normal)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                     ],
                   ),
                   Spacer(),
@@ -109,10 +139,24 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontSize: 12.sp,fontWeight: FontWeight.normal)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                       SizedBox(height: 15.sp),
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontSize: 12.sp,fontWeight: FontWeight.normal)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                     ],
                   ),
                   Spacer(),
@@ -120,10 +164,24 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontSize: 12.sp,fontWeight: FontWeight.normal)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                       SizedBox(height: 15.sp),
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontSize: 12.sp,fontWeight: FontWeight.normal)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                     ],
                   ),
                   Spacer(),
@@ -131,10 +189,24 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                       SizedBox(height: 15.h),
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -168,13 +240,34 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                       SizedBox(height: 15.h),
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                       SizedBox(height: 15.h),
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                     ],
                   ),
                   Spacer(),
@@ -182,13 +275,34 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                       SizedBox(height: 15.h),
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                       SizedBox(height: 15.h),
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                     ],
                   ),
                   Spacer(),
@@ -196,13 +310,34 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                       SizedBox(height: 15.h),
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                       SizedBox(height: 15.h),
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                     ],
                   ),
                   Spacer(),
@@ -210,13 +345,34 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                       SizedBox(height: 15.h),
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                       SizedBox(height: 15.h),
                       CircleAvatar(radius: 27.w, child: Icon(Icons.people)),
-                      Text("Parties", style: lato(color: white,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+                      Text(
+                        "Parties",
+                        style: lato(
+                          color: white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -257,8 +413,22 @@ class HomeScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("This Year", style: lato(color: white, fontSize: 16.sp,fontWeight: FontWeight.normal)),
-              Text("View Bills", style: lato(color: Colors.blueAccent,fontWeight: FontWeight.normal,fontSize: 12.sp)),
+              Text(
+                "This Year",
+                style: lato(
+                  color: white,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              Text(
+                "View Bills",
+                style: lato(
+                  color: Colors.blueAccent,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 12.sp,
+                ),
+              ),
             ],
           ),
           SizedBox(height: 10.h),
@@ -278,7 +448,14 @@ class HomeScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: lato(color: Colors.grey, fontSize: 14.sp,fontWeight:   FontWeight.normal)),
+        Text(
+          title,
+          style: lato(
+            color: Colors.grey,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
         Text(
           amount,
           style: lato(color: white, fontSize: 18, fontWeight: FontWeight.bold),

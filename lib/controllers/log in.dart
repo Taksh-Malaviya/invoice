@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,6 +24,14 @@ class LoginController extends GetxController {
       _showErrorSnackbar("An unexpected error occurred. Please try again.");
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> logoutUser() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+    } catch (e) {
+      log("Error logging out: $e");
     }
   }
 

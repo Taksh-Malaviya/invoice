@@ -53,6 +53,7 @@ dependencies:
   path: ^1.9.1
   flutter_screenutil: ^5.9.3
   google_fonts: ^6.2.1
+  mailer: ^6.4.1
 
 
 flutter_icons:
@@ -92,6 +93,8 @@ flutter:
   assets:
     - assets/icon/invoice_logo.png
     - assets/photos/pavlovvisuals-removebg-preview.png
+    - assets/photos/intro_2.png
+    - assets/photos/intro_3.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

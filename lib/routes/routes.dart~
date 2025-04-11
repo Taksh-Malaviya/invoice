@@ -27,9 +27,22 @@ class Routes {
       page: () => SplashScreen(),
       transition: Transition.fadeIn,
     ),
-    GetPage(name: intro_1, page: () => Intro1(), transition: Transition.fadeIn),
-    GetPage(name: intro_2, page: () => Intro2(), transition: Transition.fadeIn),
-    GetPage(name: intro_3, page: () => Intro3(), transition: Transition.fadeIn),
+    GetPage(
+      name: intro_1,
+      page: () => Intro1(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: intro_2,
+      page: () => Intro2(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: intro_3,
+      page: () => Intro3(),
+      transition: Transition.fadeIn,
+    ),
+
 
     GetPage(
       name: register,

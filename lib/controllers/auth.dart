@@ -38,19 +38,6 @@ class AuthController extends GetxController {
 
       User? user = userCredential.user;
 
-      if (user != null && !user.emailVerified) {
-        await user.sendEmailVerification();
-        Get.snackbar(
-          "Verify Your Email",
-          "A verification email has been sent to ${user.email}. Please verify your email before logging in.",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.orange,
-          colorText: Colors.white,
-        );
-
-        await FirebaseAuth.instance.signOut();
-      }
-
       Get.offNamed(Routes.login);
     } on FirebaseAuthException catch (e) {
       _showErrorSnackbar(_getErrorMessage(e.code));
@@ -61,7 +48,6 @@ class AuthController extends GetxController {
     }
   }
 
-  // Field Validation
   bool _validateFields() {
     if (emailController.text.trim().isEmpty ||
         passwordController.text.trim().isEmpty) {

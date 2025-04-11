@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:invoice_generator/colors/colours.dart';
 import 'package:invoice_generator/routes/routes.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: black,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +35,11 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(height: 20),
             Text(
               "Invoice Generator",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: lato(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: white,
+              ),
             ),
           ],
         ),
@@ -48,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (user != null) {
       Get.offNamed(Routes.home);
     } else {
-      Get.offNamed(Routes.intro);
+      Get.offNamed(Routes.intro_1);
     }
   }
 }

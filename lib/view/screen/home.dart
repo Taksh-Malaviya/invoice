@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
+import 'package:invoice_generator/controllers/log%20in.dart';
 
 import '../../colors/colours.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var login = Get.put(LoginController());
     return Scaffold(
       backgroundColor: Color(0xFF1E1E2C),
       appBar: AppBar(
@@ -25,7 +27,13 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Spacer(),
-            Icon(Icons.notifications, color: white),
+            IconButton(
+              onPressed: () {
+                login.logoutUser();
+              },
+              icon: Icon(Icons.logout),
+              color: white,
+            ),
           ],
         ),
       ),

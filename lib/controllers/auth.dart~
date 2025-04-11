@@ -26,43 +26,33 @@ class AuthController extends GetxController {
   }
 
   Future<void> register() async {
-    if (!_validateFields()) return;
-
-    isLoading.value = true;
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-            email: emailController.text.trim(),
-            password: passwordController.text.trim(),
+            email: emailController.text,
+            password: passwordController.text,
           );
 
       User? user = userCredential.user;
-
       if (user != null && !user.emailVerified) {
-        await user.sendEmailVerification();
+        await user.sendEmailVerification(); // Send email verification
         Get.snackbar(
           "Verify Your Email",
-          "A verification email has been sent to ${user.email}. Please verify your email before logging in.",
+          "A verification email has been sent. Please check your inbox.",
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.orange,
-          colorText: Colors.white,
+          duration: Duration(seconds: 5),
         );
-
-        await FirebaseAuth.instance
-            .signOut();
       }
-
-      Get.offNamed(Routes.login);
     } on FirebaseAuthException catch (e) {
-      _showErrorSnackbar(_getErrorMessage(e.code));
-    } catch (e) {
-      _showErrorSnackbar("An unexpected error occurred. Please try again.");
-    } finally {
-      isLoading.value = false;
+      Get.snackbar(
+        "Registration Error",
+        e.message ?? "Something went wrong",
+        snackPosition: SnackPosition.BOTTOM,
+        duration: Duration(seconds: 3),
+      );
     }
   }
 
-  // Field Validation
   bool _validateFields() {
     if (emailController.text.trim().isEmpty ||
         passwordController.text.trim().isEmpty) {
