@@ -5,13 +5,15 @@ import 'package:invoice_generator/view/intro/intro_2.dart';
 import 'package:invoice_generator/view/intro/intro_3.dart';
 import 'package:invoice_generator/view/screen/credit.dart';
 import 'package:invoice_generator/view/screen/home.dart';
+import 'package:invoice_generator/view/screen/invoice/add_customer.dart';
+import 'package:invoice_generator/view/screen/invoice/customer_form.dart';
 import '../view/auth/login/login.dart';
 import '../view/screen/invoice.dart';
+import '../view/screen/invoice/invoice.dart';
 import '../view/screen/slplash.dart';
 
 class Routes {
   static const String splashScreen = "/";
-
   static const String register = "/register";
   static const String intro_1 = "/intro_1";
   static const String intro_2 = "/intro_2";
@@ -19,6 +21,8 @@ class Routes {
   static const String login = "/login";
   static const String home = "/home";
   static const String invoice = "/invoice";
+  static const String Add_customers = "/Add_customers";
+  static const String form_customert = "/form_customert";
   static const String credit = "/credit";
 
   static List<GetPage> pages = [
@@ -46,11 +50,21 @@ class Routes {
       page: () => HomeScreen(),
       transition: Transition.fadeIn,
     ),
-    // GetPage(
-    //   name: invoice,
-    //   page: () => InvoiceHomePage(),
-    //   transition: Transition.fadeIn,
-    // ),
+    GetPage(
+      name: invoice,
+      page: () => Invoice(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: Add_customers,
+      page: () => AddCustomer(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: form_customert,
+      page: () => AllCustomers(),
+      transition: Transition.fadeIn,
+    ),
     GetPage(
       name: credit,
       page: () => CreditMemoPage(),

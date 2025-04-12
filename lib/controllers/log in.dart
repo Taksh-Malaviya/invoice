@@ -31,6 +31,7 @@ class LoginController extends GetxController {
   Future<void> logoutUser() async {
     try {
       await FirebaseAuth.instance.signOut();
+      Get.offNamed(Routes.login);
     } catch (e) {
       log("Error logging out: $e");
     }
@@ -57,7 +58,7 @@ class LoginController extends GetxController {
 
       await FirebaseAuth.instance.signInWithCredential(credential);
 
-      Get.offNamed('/home');
+      Get.offNamed(Routes.home);
     } catch (e) {
       _showErrorSnackbar("Failed to sign in with Google. Please try again.");
     }

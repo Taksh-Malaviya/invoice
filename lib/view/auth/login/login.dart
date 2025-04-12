@@ -60,7 +60,7 @@ class LoginScreen extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    "Log in",
+                    "Sign in",
                     style: lato(
                       color: white,
                       fontSize: 22.sp,
@@ -133,7 +133,6 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 20.h),
               Obx(
                 () => TextFormField(
-                  maxLength: 8,
                   controller: controller.passwordController,
                   obscureText: pass.isPasswordVisible.value,
                   style: TextStyle(color: Colors.white, fontSize: 14),
@@ -206,7 +205,7 @@ class LoginScreen extends StatelessWidget {
               ),
 
               SizedBox(height: 10.h),
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: white),

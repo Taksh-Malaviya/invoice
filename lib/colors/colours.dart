@@ -6,6 +6,9 @@ Color black = Colors.black;
 Color blue = Colors.blueAccent;
 Color green = Colors.green;
 Color white70 = Colors.white70;
+Color grey = Colors.grey;
+Color grey900 = Colors.grey[900]!;
+Color white24 = Colors.white24;
 
 //fonts
 
